@@ -81,7 +81,7 @@ if ! parseopts "$opt_short" "${opt_long[@]}" "${opt_hidden[@]}" -- "$@"; then
 fi
 set -- "${OPTRET[@]}"
 
-unset mode db_name db_root status_file pacman_conf vercmp_args
+unset mode db_name db_root db_ext status_file pacman_conf vercmp_args
 while true; do
     case $1 in
         -d|--database|--repo)
@@ -126,6 +126,7 @@ fi
 # assign environment variables
 : "${db_name=$AUR_REPO}"
 : "${db_root=$AUR_DBROOT}"
+: "${db_ext=$AUR_DBEXT}"
 
 unset conf_file_repo server
 
@@ -219,7 +220,7 @@ case $modifier in
             exit 20
         else
             contents() {
-                db_table "$table_format" "$db_root/$db_name".db
+                db_table "$table_format" "$db_root/$db_name.${db_ext:-db}"
             }
         fi ;;
     #requires
@@ -238,7 +239,7 @@ case $mode in
         contents
         ;;
     path)
-        readlink -f -- "$db_root/$db_name".db
+        readlink -f -- "$db_root/$db_name.${db_ext:-db}"
         ;;
     *)
         usage

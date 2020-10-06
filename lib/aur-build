@@ -182,7 +182,7 @@ case ${db_name=$AUR_REPO} in
             "") db_path=$(aur repo "${pacconf_args[@]}" --path -d "$db_name")
                 db_root=$(dirname "$db_path")
                 ;;
-             *) db_path=$(readlink -f -- "$db_root/$db_name".db)
+             *) db_path=$(readlink -f -- "$db_root/$db_name.${AUR_DBEXT:-db}")
                 ;;
         esac ;;
 esac
